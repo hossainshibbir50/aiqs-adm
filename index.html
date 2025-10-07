@@ -70,7 +70,7 @@
   <div class="header">
     <img src="images/aiqs-logo.png" alt="AIQS Logo">
     <h1>Al-Hidaya Institute of Quran and Science</h1>
-    <p>📅 Estd. 2025 | 👤 Founder: Mohammad Shibbir (BEC CE-08)</p>
+    <p>📅 Estd. 2025 | 👤 Founder: Shibbir (BEC CE-08)</p>
   </div>
 
   <!-- 📝 Form Title -->
@@ -112,23 +112,40 @@
   <script>
     document.getElementById("admissionForm").addEventListener("submit", function(e){
       e.preventDefault();
-      const data = new FormData(e.target);
-      const summary = `
-        <h3>🎓 AIQS Admission Summary 🎓</h3>
-        <p><strong>👤 Name (English):</strong> ${data.get("name")}</p>
-        <p><strong>📝 নাম (বাংলা):</strong> ${data.get("banglaName")}</p>
-        <p><strong>📱 Mobile:</strong> ${data.get("mobile")}</p>
-        <p><strong>📧 Email:</strong> ${data.get("email")}</p>
-        <p><strong>📚 Course:</strong> ${data.get("course")}</p>
-        <p><strong>🕒 Batch Time:</strong> ${data.get("batch")}</p>
-        <p>✅ ধন্যবাদ! আপনার তথ্য সফলভাবে গ্রহণ করা হয়েছে।</p>
-      `;
-      document.getElementById("summary").innerHTML = summary;
-      document.getElementById("summary").style.display = "block";
-      e.target.style.display = "none";
+      const data = {
+        name: e.target.name.value,
+        banglaName: e.target.banglaName.value,
+        mobile: e.target.mobile.value,
+        email: e.target.email.value,
+        course: e.target.course.value,
+        batch: e.target.batch.value
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycbwe_tRMfjDkKK7E8au5HRJjHlPVsM0JTzJotY0wwtU/exec", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(res => res.text())
+      .then(msg => {
+        const summary = `
+          <h3>🎓 AIQS Admission Summary 🎓</h3>
+          <p><strong>👤 Name (English):</strong> ${data.name}</p>
+          <p><strong>📝 নাম (বাংলা):</strong> ${data.banglaName}</p>
+          <p><strong>📱 Mobile:</strong> ${data.mobile}</p>
+          <p><strong>📧 Email:</strong> ${data.email}</p>
+          <p><strong>📚 Course:</strong> ${data.course}</p>
+          <p><strong>🕒 Batch Time:</strong> ${data.batch}</p>
+          <p>✅ ধন্যবাদ! আপনার তথ্য সফলভাবে Google Sheet-এ সংরক্ষিত হয়েছে।</p>
+        `;
+        document.getElementById("summary").innerHTML = summary;
+        document.getElementById("summary").style.display = "block";
+        e.target.style.display = "none";
+      });
     });
   </script>
 
 </body>
-
 </html>
